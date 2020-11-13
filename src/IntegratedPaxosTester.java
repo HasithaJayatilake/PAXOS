@@ -65,7 +65,7 @@ public class IntegratedPaxosTester {
                     "A diff function compares the decided paxos values of each node, \n with the expected output at the end of the series of proposals\n");
             System.out.println("Choose a testing option below\n");
 
-            System.out.println("1) One proposer at a time no failures (M1 proposes initially, M2 proposes)");
+            System.out.println("1) One proposer at a time no failures (M1 proposes initially, then M2 proposes)");
             System.out.println("2) One proposer at a time no failures (M1 proposes initially, once complete M2 proposes twice)");
             System.out.println("3) One proposer with failures (M2 proposes then dies)");
             System.out.println("4) Two proposers without failures (M1 and M2 propose together)");
