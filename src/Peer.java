@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 public class Peer extends Thread {
     // private ExecutorService pool;
     private Server server;
-    private PeerThread listener;
+    protected PeerThread listener;
     private BufferedReader br;
     protected String username;
     private float peerID;
@@ -17,12 +17,13 @@ public class Peer extends Thread {
     private float proposalNum; // Global proposal number ensures fairness
     private boolean proposalStarted;
     private boolean proposalComplete;
-    private boolean faulty;
+    protected int failureType; //For the faulty functioning mode
     protected String president; // Value accepted by Paxos in phase 2b
     // private String proposalStatus;
 
     // Constructors
-    public Peer(String username, int quorum, ThreadGroup threadGroup, boolean faulty) {
+    // Constructor for integrated tester
+    public Peer(String username, int quorum, ThreadGroup threadGroup, int failureType) {
         super(threadGroup, username);
         verbose = false;
         try {
@@ -39,10 +40,11 @@ public class Peer extends Thread {
         this.proposalNum = 1;
         this.proposalStarted = false;
         this.proposalComplete = false;
-        this.faulty = faulty;
+        this.failureType = failureType;
         this.quorum = quorum;
     }
 
+    // Constructor for manual testing mode
     public Peer(Server server, int quorum, BufferedReader br, String username, Character memberType) {
         this.president = "undecided";
         this.server = server;
@@ -60,9 +62,6 @@ public class Peer extends Thread {
         try {
             PeerThread listener = new PeerThread(this, this.username, false);
             this.setListener(listener);
-            if (this.faulty){
-                listener.setFaulty(true);
-            }
             listener.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,7 +122,7 @@ public class Peer extends Thread {
         }
 
         // Instantiate peer and communicate
-        Peer paxosClient = new Peer(server, 5, br, username, memberType);
+        Peer paxosClient = new Peer(server, 2, br, username, memberType);
         PeerThread listener = new PeerThread(paxosClient, paxosClient.username, true);
         paxosClient.setListener(listener);
         paxosClient.communicate();
