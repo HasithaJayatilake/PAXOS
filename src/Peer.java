@@ -65,9 +65,9 @@ public class Peer extends Thread {
             this.setListener(listener);
             listener.start();
         } catch (Exception e) {
-            e.printStackTrace();
-            interrupt();
-        }
+            // e.printStackTrace();
+            Thread.currentThread().interrupt();
+        } 
     }
 
     public static void main(String[] args) throws Exception {

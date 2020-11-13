@@ -93,6 +93,12 @@ public class IntegratedPaxosTester {
         boolean run = true;
         while (run) {
 
+            // if (this.threadGroup != null){
+            //     this.threadGroup.interrupt();
+            //     System.out.println("Active thread count: " + this.threadGroup.activeCount());
+            //     // this.threadGroup.destroy();
+            // }
+
             System.out.println("Each testing option below is a sequence of proposals");
             System.out.println(
                     "A diff function compares the decided paxos values of each node, \n with the expected output at the end of the series of proposals\n");
@@ -131,7 +137,7 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
+                        // TimeUnit.SECONDS.sleep(1);
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
                             outputWriter.println(result);
@@ -169,7 +175,7 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
+                        // TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
@@ -183,7 +189,7 @@ public class IntegratedPaxosTester {
                             System.out.println("\n----------------------------------------------------------------");
                             System.out.println("Test case b successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -210,7 +216,7 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
+                        // TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
@@ -222,9 +228,9 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file3, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case b successful!");
+                            System.out.println("Test case c successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -249,7 +255,7 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
+                        // TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
@@ -261,9 +267,9 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file4, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case b successful!");
+                            System.out.println("Test case d successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -289,8 +295,6 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
-
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
                             outputWriter.println(result);
@@ -301,9 +305,9 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file4, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case b successful!");
+                            System.out.println("Test case e successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -330,8 +334,6 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
-
                         // Checkpoint for consensus
                         boolean passed = true;
                         for (Peer peer : peerList) {
@@ -353,10 +355,10 @@ public class IntegratedPaxosTester {
                         }
 
                         // Recover M3 and send proposal
-                        M3.listener.setFaulty(3); // Partition M3
-                        if ((M3.listener.getFaulty() == 3) && M3.listener.getKeepAlive() && M3.listener.isAlive()) {
-                            System.out.println("M3 state = " + M3.listener.getState());
-                            // System.out.println("M3 has recovered!");
+                        M3.listener.setFaulty(0); // Partition M3
+                        if ((M3.listener.getFaulty() == 0) && M3.listener.getKeepAlive() && M3.listener.isAlive()) {
+                            // System.out.println("M3 state = " + M3.listener.getState());
+                            System.out.println("M3 has recovered!");
                         } else {
                             System.out.println("Failed to recover M3");
                             System.exit(0);
@@ -371,8 +373,6 @@ public class IntegratedPaxosTester {
                             }
                         }
 
-                        TimeUnit.SECONDS.sleep(1);
-
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
                             outputWriter.println(result);
@@ -383,9 +383,9 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case b successful!");
+                            System.out.println("Test case f successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -417,7 +417,6 @@ public class IntegratedPaxosTester {
     public void Init_Peers(int failureMode) {
         this.threadGroup = new ThreadGroup("Paxos-group");
         this.peerList.clear();
-
 
         this.M1 = new Peer("M1", quorum, threadGroup, 0);
         // Start M2 contingent on failure mode
