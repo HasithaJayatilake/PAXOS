@@ -13,6 +13,7 @@ public class Peer extends Thread {
     private Character memberType;
     private boolean verbose;
 
+    protected int quorum; // The required number for majority
     private float proposalNum; // Global proposal number ensures fairness
     private boolean proposalStarted;
     private boolean proposalComplete;
@@ -21,7 +22,7 @@ public class Peer extends Thread {
     // private String proposalStatus;
 
     // Constructors
-    public Peer(String username, ThreadGroup threadGroup, boolean faulty) {
+    public Peer(String username, int quorum, ThreadGroup threadGroup, boolean faulty) {
         super(threadGroup, username);
         verbose = false;
         try {
@@ -39,9 +40,10 @@ public class Peer extends Thread {
         this.proposalStarted = false;
         this.proposalComplete = false;
         this.faulty = faulty;
+        this.quorum = quorum;
     }
 
-    public Peer(Server server, BufferedReader br, String username, Character memberType) {
+    public Peer(Server server, int quorum, BufferedReader br, String username, Character memberType) {
         this.president = "undecided";
         this.server = server;
         this.br = br;
@@ -51,6 +53,7 @@ public class Peer extends Thread {
         this.proposalNum = 1;
         this.proposalStarted = false;
         this.proposalComplete = false;
+        this.quorum = quorum;
     }
 
     public void run() {
@@ -120,7 +123,7 @@ public class Peer extends Thread {
         }
 
         // Instantiate peer and communicate
-        Peer paxosClient = new Peer(server, br, username, memberType);
+        Peer paxosClient = new Peer(server, 5, br, username, memberType);
         PeerThread listener = new PeerThread(paxosClient, paxosClient.username, true);
         paxosClient.setListener(listener);
         paxosClient.communicate();

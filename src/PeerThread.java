@@ -1,9 +1,6 @@
 import java.net.*;
 
 public class PeerThread extends Thread {
-    // The required number for majority
-    private static final int majority = 5;
-
     // The four phases of which the peer can be in one
     public static final String phase0 = "ready";
     public static final String phase1 = "promise-phase";
@@ -62,7 +59,7 @@ public class PeerThread extends Thread {
 
             while (keepAlive) {
 
-                if ((this.proposerPhase.equals(phase1)) && (this.prepareOkCount >= majority)) {
+                if ((this.proposerPhase.equals(phase1)) && (this.prepareOkCount >= this.peer.quorum)) {
                     // Majority prepare ok received, send accept-request
                     if (updateRequired) {
                         this.proposalValue = this.updatedProposalValue;
@@ -83,7 +80,7 @@ public class PeerThread extends Thread {
                     }
                 }
 
-                if ((this.proposerPhase.equals(phase2)) && (this.acceptOkCount >= majority)) {
+                if ((this.proposerPhase.equals(phase2)) && (this.acceptOkCount >= this.peer.quorum)) {
                     if (this.proposalValue.equals(this.peer.president)) {
                         System.out.println(">> " + this.memberName + ": Accept-Ok majority achieved!");
                         System.out.println(">> " + this.memberName

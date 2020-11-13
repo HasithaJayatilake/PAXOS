@@ -81,7 +81,7 @@ public class IntegratedPaxosTester {
                 PrintWriter outputWriter = new PrintWriter(bufferedwriter);
                 switch (userInput) {
                     case 1:
-                        Init_Peers(false);
+                        Init_Peers(false, 5);
                         M1.sendProposal(false);
                         while (true) {
                             if (M1.getListener().getProposerPhase().equals(PeerThread.phase3)) {
@@ -115,7 +115,7 @@ public class IntegratedPaxosTester {
                         System.exit(0);
                         break;
                     case 2:
-                        Init_Peers(false);
+                        Init_Peers(false, 5);
                         M1.sendProposal(false);
                         while (true) {
                             if (M1.getListener().getProposerPhase().equals(PeerThread.phase3)) {
@@ -158,7 +158,7 @@ public class IntegratedPaxosTester {
                         System.exit(0);
                         break;
                     case 3:
-                        Init_Peers(true);
+                        Init_Peers(true, 5);
                         M2.sendProposal(false);
                         // M2.getListener().interrupt();
                         M2.interrupt();
@@ -187,7 +187,7 @@ public class IntegratedPaxosTester {
                         System.exit(0);
                         break;
                     case 4:
-                        Init_Peers(false);
+                        Init_Peers(false, 5);
                         M1.sendProposal(false);
                         M2.sendProposal(false);
 
@@ -216,7 +216,7 @@ public class IntegratedPaxosTester {
                         System.exit(0);
                         break;
                     case 5:
-                        Init_Peers(true);
+                        Init_Peers(true, 5);
                         M1.sendProposal(false);
                         M2.sendProposal(false);
 
@@ -263,22 +263,22 @@ public class IntegratedPaxosTester {
         }
     }
 
-    public void Init_Peers(boolean failureMode) {
+    public void Init_Peers(boolean failureMode, int quorum) {
         this.threadGroup = new ThreadGroup("Paxos-group");
 
-        this.M1 = new Peer("M1", threadGroup, false);
+        this.M1 = new Peer("M1", quorum, threadGroup, false);
         if (failureMode) {
-            this.M2 = new Peer("M2", threadGroup, true);
+            this.M2 = new Peer("M2", quorum, threadGroup, true);
         } else {
-            this.M2 = new Peer("M2", threadGroup, false);
+            this.M2 = new Peer("M2", quorum, threadGroup, false);
         }
-        this.M3 = new Peer("M3", threadGroup, false);
-        this.M4 = new Peer("M4", threadGroup, false);
-        this.M5 = new Peer("M5", threadGroup, false);
-        this.M6 = new Peer("M6", threadGroup, false);
-        this.M7 = new Peer("M7", threadGroup, false);
-        this.M8 = new Peer("M8", threadGroup, false);
-        this.M9 = new Peer("M9", threadGroup, false);
+        this.M3 = new Peer("M3", quorum, threadGroup, false);
+        this.M4 = new Peer("M4", quorum, threadGroup, false);
+        this.M5 = new Peer("M5", quorum, threadGroup, false);
+        this.M6 = new Peer("M6", quorum, threadGroup, false);
+        this.M7 = new Peer("M7", quorum, threadGroup, false);
+        this.M8 = new Peer("M8", quorum, threadGroup, false);
+        this.M9 = new Peer("M9", quorum, threadGroup, false);
 
         this.peerList.clear();
         this.peerList.add(M1);
