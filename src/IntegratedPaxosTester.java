@@ -5,9 +5,12 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.lang.*;
 
 public class IntegratedPaxosTester {
     private int quorum;
+    private float runtime;
+    private int messageCount;
     ThreadGroup threadGroup;
     LinkedList<Peer> peerList;
     File file1;
@@ -39,6 +42,8 @@ public class IntegratedPaxosTester {
         this.file3 = new File("expected-output-3.txt");
         this.file4 = new File("expected-output-4.txt");
         this.peerList = new LinkedList<Peer>();
+        this.runtime = 0f;
+        this.messageCount = 0;
     }
 
     public void runIntegratedTester() throws Exception {
@@ -76,7 +81,9 @@ public class IntegratedPaxosTester {
                         System.out.println("\nInvalid input! Try again");
                         throw new IOException();
                 }
-            } catch (Exception e) {
+            } catch(NumberFormatException e){
+                System.out.println("\nInvalid input! Try again");
+            }catch (Exception e) {
                 System.out.println("------------------------------------");
                 continue;
             }
@@ -107,13 +114,18 @@ public class IntegratedPaxosTester {
                 FileWriter filewriter = new FileWriter(outputFile, false);
                 BufferedWriter bufferedwriter = new BufferedWriter(filewriter);
                 PrintWriter outputWriter = new PrintWriter(bufferedwriter);
+                long startTime;
 
                 switch (userInput) {
                     case "a":
                         Init_Peers(0);
+                        // Start timer
+                        startTime = System.currentTimeMillis();
                         M1.sendProposal(false);
                         while (true) {
                             if (M1.getListener().getProposerPhase().equals(PeerThread.phase3)) {
+                                // Calculate runtime
+                                this.runtime = System.currentTimeMillis() - startTime;
                                 break;
                             }
                         }
@@ -130,7 +142,7 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file1, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case a successful!");
+                            System.out.println("Test case a successful! Runtime: " + this.runtime + "ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -142,11 +154,15 @@ public class IntegratedPaxosTester {
                     case "b":
                         // M1 and M2 propose simultaneously
                         Init_Peers(0);
+                        // Start timer
+                        startTime = System.currentTimeMillis();
                         M1.sendProposal(false);
                         M2.sendProposal(false);
 
                         while (true) {
                             if (M2.getListener().getProposerPhase().equals(PeerThread.phase3)) {
+                                // Calculate runtime
+                                this.runtime = System.currentTimeMillis() - startTime;
                                 break;
                             }
                         }
@@ -160,7 +176,7 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case b successful!");
+                            System.out.println("Test case b successful! Runtime: " + this.runtime + "ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -173,12 +189,16 @@ public class IntegratedPaxosTester {
                     case "c":
                         // M1 and M2 propose simultaneously
                         Init_Peers(0);
+                        // Start timer
+                        startTime = System.currentTimeMillis();
                         M1.sendProposal(false);
                         M2.sendProposal(false);
                         M3.sendProposal(false);
 
                         while (true) {
                             if (M3.getListener().getProposerPhase().equals(PeerThread.phase3)) {
+                                // Calculate runtime
+                                this.runtime = System.currentTimeMillis() - startTime;
                                 break;
                             }
                         }
@@ -192,7 +212,7 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file3, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case c successful!");
+                            System.out.println("Test case c successful! Runtime: " + this.runtime + "ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -205,10 +225,14 @@ public class IntegratedPaxosTester {
                     case "d":
                         // M2 proposes, then partitioned
                         Init_Peers(1);
+                        // Start timer
+                        startTime = System.currentTimeMillis();
                         M2.sendProposal(false);
-                        M2.interrupt();
+
                         while (true) {
-                            if (M2.getListener().getProposerPhase().equals(PeerThread.phase2)) {
+                            if (M2.getListener().getProposerPhase().equals(PeerThread.phase3)) {
+                                // Calculate runtime
+                                this.runtime = System.currentTimeMillis() - startTime;
                                 break;
                             }
                         }
@@ -222,7 +246,7 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file4, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case d successful!");
+                            System.out.println("Test case d successful! Runtime: " + this.runtime + "ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -235,11 +259,15 @@ public class IntegratedPaxosTester {
                     case "e":
                         // Two proposers with failures
                         Init_Peers(1);
+                        // Start timer
+                        startTime = System.currentTimeMillis();
                         M1.sendProposal(false);
                         M2.sendProposal(false);
 
                         while (true) {
-                            if (M2.getListener().getProposerPhase().equals(PeerThread.phase2)) {
+                            if (M2.getListener().getProposerPhase().equals(PeerThread.phase3)) {
+                                // Calculate runtime
+                                this.runtime = System.currentTimeMillis() - startTime;
                                 break;
                             }
                         }
@@ -253,7 +281,7 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file4, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case e successful!");
+                            System.out.println("Test case e successful! Runtime: " + this.runtime + "ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -269,6 +297,8 @@ public class IntegratedPaxosTester {
                         Init_Peers(2);
                         System.out.println("Test case 6 initiated");
                         System.out.println("M3 has been partitioned");
+                        // Start timer
+                        startTime = System.currentTimeMillis();
                         M1.sendProposal(false);
                         M2.sendProposal(false);
 
@@ -313,6 +343,8 @@ public class IntegratedPaxosTester {
 
                         while (true) {
                             if (M3.getListener().getProposerPhase().equals(PeerThread.phase3)) {
+                                // Calculate runtime
+                                this.runtime = System.currentTimeMillis() - startTime;
                                 break;
                             }
                         }
@@ -326,7 +358,7 @@ public class IntegratedPaxosTester {
 
                         if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case f successful!");
+                            System.out.println("Test case f successful! Runtime: " + this.runtime + "ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -341,13 +373,14 @@ public class IntegratedPaxosTester {
                         System.exit(0);
                         break;
                     default:
-                        System.out.println("Invalid input! Try again");
                         outputWriter.close();
+                        System.out.println("\nInvalid input! Try again");
                         throw new IOException();
                 }
 
+            } catch(NumberFormatException e){
+                System.out.println("\nInvalid input! Try again");
             } catch (Exception e) {
-                // e.printStackTrace();
                 System.out.println("\n------------------------------\n");
                 continue;
             }
