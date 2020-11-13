@@ -34,10 +34,10 @@ Running each of the peers for manual testing
 <h2>Integrated testing</h2>
 
 1. Compile all files
-    Console Command: javac *.java
+   - Console Command: javac *.java
 
 2. Run IntegratedPaxosTester
-    Console Command: java IntegratedPaxosTester
+   - Console Command: java IntegratedPaxosTester
 
 3. Follow console instructions and choose the required test case
 
