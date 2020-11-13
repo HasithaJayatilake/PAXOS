@@ -43,37 +43,18 @@ Running each of the peers for manual testing
 
 <h3>Test Case Outline</h3>
 
-1) One proposer at a time no failures (M1 proposes initially, then M2 proposes)
-    >> M1 proposes, and is selected pasxos leader and also becomes president.
-    >> Then M2 proposes himself for president (with a higher proposal number).
-    >> M2 is selected as Paxos leader, but it is M1's value that is accepted
-    >> Expected output is for paxos to agree on M1
+The base configurations for the standard functioning mode are as follows:  
 
-2) One proposer at a time no failures (M1 proposes initially, once complete M2 proposes twice)
-    >> Same as case one, but the second time M2 proposes himself, his value is accepted.
-    >> Expected output is for paxos to agree on M2
+a) One proposer: M1  
+b) Two proposers simultaneously: M1 and M2 
+c) Three proposers simultaneously: M1, M2 and M3 
 
-3) One proposer with failures (M2 proposes then dies)
-    >> M2 dies after sending accept-request.
-    >> This is setup by killing the communication thread of M2.
-    >> The expected output is for all the members except M2 to select M2 as president, and paxos leader
+The expected consensus values of the variable ‘president’ for the configurations above are, M1, M2 and M3 respectively for configurations a), b) and c).  
 
-4) Two proposers without failures (M1 and M2 propose together)
-    >> Proposal number is the sum of an integer (initialised at 1), and a float (the peerID divided by 10).
-    >> i.e. Initial proposal nums for M1 and M2, are 1.1 and 1.2 respectively.
-    >> If M2's proposal arrives at a peer before M1, then M1 is rejected.
-    >> If M2's proposal arrives after M1, M1 gets prepare-ok, and so does M2.
-        >> Since M2's proposal number is larger than M1's, M2 gets the promise. 
-        >> Since both of these are an initial proposal, the value returned by the acceptors in phase 1 is 'undecided'.
-        >> Hence M2 and M1 are each allowed to attach their own values to the proposal.
-        >> However, M1's accept-request is rejected since M2 has the promise.
-        >> Expected output is paxos agreeing on M2 for president.
+The base configurations for the faulty functioning mode are the following  
 
-5) Two proposers with failures (M1 and M2 propose together, then M2 dies)
-    >> In this scenario, M2 dies after sending accept-requests.
-    >> The expected outcome is that all the peer's agree on M2 as president, except M2.
+d) One proposer: M2 proposes and is partitioned 
+e) Two proposers simultaneously: M1 and M2, then M2 is partitioned 
+f) Three proposers: M3 suffers a network partition, while M1, M2 propose together, then M3 recovers and proposes.  
 
-6) Two proposers with failures (M1 and M2 propose together, then M2 dies, then M3 proposes)
-    >> In this scenario, M2 dies after sending accept-requests.
-    >> Then M3 proposes.
-    >> The expected outcome is that all the peers agree on M2 as president, except M2.
+In configurations d) and e), M2 dies immediately after sending accept-requests, so is unable to update their own value of ‘president.’ The expected consensus value of the variable ‘president’ for both configurations 1 and 2 in the faulty mode, is M2, despite M2 not having learned this value itself. The expected consensus value in configuration f) is M2, and M3 is expected to have learned this at the end of all the transactions.  
