@@ -2,19 +2,19 @@
 
 <h2>Overview</h2>
 
-<p>This is a simple PAXOS implementation, with 9 named peers (M1 to M9).</p>
-<p>M1, 2 and 3 are allowed to make proposals (they are proposers and acceptors at the same time)
-<p>The rest are only acceptors</p>
+ - This is a simple PAXOS implementation, with 9 named peers (M1 to M9).
+ - M1, 2 and 3 are allowed to make proposals (they are proposers and acceptors at the same time)
+ - The rest are only acceptors
 
 <h3>Proposal Priority</h3>
-<p> Each proposal has a globally unique ID.</p>
-<p>This is achieved by appending the nodeId to the end of the proposal ID.</p>
-<p>Proposal ID is initiated at 1 for each node,</p>
-<p>And is incremeneted by 1 for every proposal it sends out</p>
-<p>And for each proposal a node receives, the node's own proposal number is updated 
-        by assigning it the value of the incoming proposalNum + 2. </p>
-<p>Incrementing by 2 is to improve fairness,
-        i.e. by reducing the likelihood that the same node will continously dominate proposals</p>
+ - Each proposal has a globally unique ID.
+ - This is achieved by appending the nodeId to the end of the proposal ID.
+ - Proposal ID is initiated at 1 for each node
+ - And is incremeneted by 1 for every proposal it sends out
+ - And for each proposal a node receives, the node's own proposal number is updated 
+        by assigning it the value of the incoming proposalNum + 2.
+ - Incrementing by 2 is to improve fairness,
+        i.e. by reducing the likelihood that the same node will continously dominate proposals
        
 <h2>Manual testing</h2>
 
