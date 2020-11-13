@@ -20,24 +20,24 @@
 
 Running each of the peers for manual testing
 1. Compile all files
- > Console Command: javac *.java
+  > Console Command: javac *.java
 
 2. Setup Peers for Members M1 through to M9 
- > Console Command: java Peer 
- > Follow console instructions, when prompted with member name, enter required name:
- > ExampleConsole Command: M1
- > Note: Connects to port 4567, and multicast IP Address - 230.0.0.0
- > Repeat this for each Member
- > Members 1 through 3 will be prompted with an option to send a proposal, 
- >> other members will simply show status updates.
+  > Console Command: java Peer 
+  > Follow console instructions, when prompted with member name, enter required name:
+  > ExampleConsole Command: M1
+  > Note: Connects to port 4567, and multicast IP Address - 230.0.0.0
+  > Repeat this for each Member
+  > Members 1 through 3 will be prompted with an option to send a proposal, 
+   >> other members will simply show status updates.
 
 ## Integrated testing
 
 1. Compile all files
- > Console Command: javac *.java
+  > Console Command: javac *.java
 
 2. Run IntegratedPaxosTester
- > Console Command: java IntegratedPaxosTester
+  > Console Command: java IntegratedPaxosTester
 
 3. Follow console instructions and choose the required test case
 
