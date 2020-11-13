@@ -1,15 +1,11 @@
 # PAXOS
 
 Proposal IDs: Each proposal has a globally unique ID. 
-
 This is achieved by appending the nodeId to the end of the proposal ID. 
-
 Proposal ID is initiated at 1 for each node,
 And is incremeneted by 1 for every proposal it sends out,
-
 And for each proposal a node receives, the node's own proposal number is updated 
-        by assigning it the value of the incoming proposalNum + 2.
-        
+        by assigning it the value of the incoming proposalNum + 2.        
 Incrementing by 2 is to improve fairness,
         i.e. by reducing the likelihood that the same node will continously dominate proposals
         
