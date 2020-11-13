@@ -12,6 +12,7 @@ public class IntegratedPaxosTester {
     LinkedList<Peer> peerList;
     File file1;
     File file2;
+    File file3;
     Peer M1;
     Peer M2;
     Peer M3;
@@ -35,6 +36,7 @@ public class IntegratedPaxosTester {
         this.gate = new CyclicBarrier(10);
         this.file1 = new File("expected-output-1.txt");
         this.file2 = new File("expected-output-2.txt");
+        this.file3 = new File("expected-output-3.txt");
         this.peerList = new LinkedList<Peer>();
     }
 
@@ -96,7 +98,7 @@ public class IntegratedPaxosTester {
 
                         TimeUnit.SECONDS.sleep(2);
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.getListener().getPresident());
+                            outputWriter.println(peer.username + ": president-" + peer.president);
                         }
                         outputWriter.close();
 
@@ -139,11 +141,11 @@ public class IntegratedPaxosTester {
 
                         TimeUnit.SECONDS.sleep(2);
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.getListener().getPresident());
+                            outputWriter.println(peer.username + ": president-" + peer.president);
                         }
                         outputWriter.close();
 
-                        if (filesDiff(this.file1, outputFile)) {
+                        if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
                             System.out.println("Test case 2 successful!");
                             System.out.println("----------------------------------------------------------------\n");
@@ -169,11 +171,11 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.getListener().getPresident());
+                            outputWriter.println(peer.username + ": president-" + peer.president);
                         }
                         outputWriter.close();
 
-                        if (filesDiff(this.file2, outputFile)) {
+                        if (filesDiff(this.file3, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
                             System.out.println("Test case 3 successful!");
                             System.out.println("----------------------------------------------------------------\n");
@@ -198,11 +200,11 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.getListener().getPresident());
+                            outputWriter.println(peer.username + ": president-" + peer.president);
                         }
                         outputWriter.close();
 
-                        if (filesDiff(this.file1, outputFile)) {
+                        if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
                             System.out.println("Test case 4 successful!");
                             System.out.println("----------------------------------------------------------------\n");
@@ -227,11 +229,11 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.getListener().getPresident());
+                            outputWriter.println(peer.username + ": president-" + peer.president);
                         }
                         outputWriter.close();
 
-                        if (filesDiff(this.file2, outputFile)) {
+                        if (filesDiff(this.file3, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
                             System.out.println("Test case 5 successful!");
                             System.out.println("----------------------------------------------------------------\n");
