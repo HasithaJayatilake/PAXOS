@@ -1,9 +1,0 @@
-M1: president-M1
-M2: president-M1
-M3: president-M1
-M4: president-M1
-M5: president-M1
-M6: president-M1
-M7: president-M1
-M8: president-M1
-M9: president-M1
