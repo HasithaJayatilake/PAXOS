@@ -83,11 +83,6 @@ public class PeerThread extends Thread {
                                 + this.proposalValue;
                         this.server.sendMessage(outputmsg, outputMessageType, this);
 
-                        // if (this.faulty == 1) {
-                        // keepAlive = false;
-                        // } else {
-                        // this.server.sendMessage(outputmsg, outputMessageType, this);
-                        // }
                     }
 
                     if ((this.proposerPhase.equals(phase2)) && (this.acceptOkCount >= this.peer.quorum)
@@ -407,4 +402,7 @@ public class PeerThread extends Thread {
         return faulty;
     }
 
+    public Peer getPeer() {
+        return peer;
+    }
 }

@@ -19,7 +19,7 @@ public class Peer extends Thread {
     private boolean proposalComplete;
     protected int failureType; //For the faulty functioning mode
     protected String president; // Value accepted by Paxos in phase 2b
-    // private String proposalStatus;
+    protected int outgoingMessageCount;
 
     // Constructors
     // Constructor for integrated tester
@@ -42,6 +42,7 @@ public class Peer extends Thread {
         this.proposalComplete = false;
         this.failureType = failureType;
         this.quorum = quorum;
+        this.outgoingMessageCount = 0;
     }
 
     // Constructor for manual testing mode
@@ -218,4 +219,5 @@ public class Peer extends Thread {
     public float getProposalNum() {
         return proposalNum;
     }
+
 }

@@ -114,6 +114,7 @@ public class IntegratedPaxosTester {
                 FileWriter filewriter = new FileWriter(outputFile, false);
                 BufferedWriter bufferedwriter = new BufferedWriter(filewriter);
                 PrintWriter outputWriter = new PrintWriter(bufferedwriter);
+                String result;
                 long startTime;
 
                 switch (userInput) {
@@ -131,18 +132,19 @@ public class IntegratedPaxosTester {
                         }
 
                         TimeUnit.SECONDS.sleep(1);
-                        String result;
                         for (Peer peer : peerList) {
                             result = peer.username + ": president-" + peer.president;
-                            System.out.println(result);
                             outputWriter.println(result);
+                            this.messageCount+=peer.outgoingMessageCount;
                         }
 
                         outputWriter.close();
 
                         if (filesDiff(this.file1, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case a successful! Runtime: " + this.runtime + "ms");
+                            System.out.println("Test case a successful!");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  Runtime: " + this.runtime + "ms");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -170,13 +172,18 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.president);
+                            result = peer.username + ": president-" + peer.president;
+                            outputWriter.println(result);
+                            this.messageCount+=peer.outgoingMessageCount;
                         }
+
                         outputWriter.close();
 
                         if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case b successful! Runtime: " + this.runtime + "ms");
+                            System.out.println("Test case b successful!");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -206,13 +213,18 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.president);
+                            result = peer.username + ": president-" + peer.president;
+                            outputWriter.println(result);
+                            this.messageCount+=peer.outgoingMessageCount;
                         }
+
                         outputWriter.close();
 
                         if (filesDiff(this.file3, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case c successful! Runtime: " + this.runtime + "ms");
+                            System.out.println("Test case b successful!");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -240,13 +252,18 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.president);
+                            result = peer.username + ": president-" + peer.president;
+                            outputWriter.println(result);
+                            this.messageCount+=peer.outgoingMessageCount;
                         }
+
                         outputWriter.close();
 
                         if (filesDiff(this.file4, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case d successful! Runtime: " + this.runtime + "ms");
+                            System.out.println("Test case b successful!");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -275,13 +292,18 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.president);
+                            result = peer.username + ": president-" + peer.president;
+                            outputWriter.println(result);
+                            this.messageCount+=peer.outgoingMessageCount;
                         }
+
                         outputWriter.close();
 
                         if (filesDiff(this.file4, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case e successful! Runtime: " + this.runtime + "ms");
+                            System.out.println("Test case b successful!");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -352,13 +374,18 @@ public class IntegratedPaxosTester {
                         TimeUnit.SECONDS.sleep(1);
 
                         for (Peer peer : peerList) {
-                            outputWriter.println(peer.username + ": president-" + peer.president);
+                            result = peer.username + ": president-" + peer.president;
+                            outputWriter.println(result);
+                            this.messageCount+=peer.outgoingMessageCount;
                         }
+
                         outputWriter.close();
 
                         if (filesDiff(this.file2, outputFile)) {
                             System.out.println("\n----------------------------------------------------------------");
-                            System.out.println("Test case f successful! Runtime: " + this.runtime + "ms");
+                            System.out.println("Test case b successful!");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
