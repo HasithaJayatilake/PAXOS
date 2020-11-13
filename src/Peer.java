@@ -17,6 +17,7 @@ public class Peer extends Thread {
     private boolean proposalStarted;
     private boolean proposalComplete;
     private boolean faulty;
+    protected String president; // Value accepted by Paxos in phase 2b
     // private String proposalStatus;
 
     // Constructors
@@ -31,7 +32,7 @@ public class Peer extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        this.president = "undecided";
         this.username = username;
         this.peerID = Character.getNumericValue(username.charAt(1)) / 10f;
         this.proposalNum = 1;
@@ -41,6 +42,7 @@ public class Peer extends Thread {
     }
 
     public Peer(Server server, BufferedReader br, String username, Character memberType) {
+        this.president = "undecided";
         this.server = server;
         this.br = br;
         this.username = username;
@@ -150,7 +152,7 @@ public class Peer extends Thread {
                     continue;
                 }
 
-                System.out.println(">> The current president is " + this.listener.getPresident() + "\n");
+                System.out.println(">> The current president is " + this.president + "\n");
                 System.out.println("Choose an option:\n");
                 System.out.println("1. Broadcast new proposal to run for president");
                 System.out.println("2. Exit\n");
