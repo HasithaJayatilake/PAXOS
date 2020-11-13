@@ -30,11 +30,9 @@ public class PeerThread extends Thread {
     private String updatedProposalValue; // Name of the updated member chosen during phase1
     private boolean updateRequired; // Boolean for prepare-ok counter to know if an older value was sent to be used
                                     // instead
-    private String president; // Value accepted by Paxos in phase 2b
     private boolean verbose;
     private boolean keepAlive;
     private boolean faulty;
-
 
     // Constructor
     public PeerThread(Peer peer, String memberName, boolean verbose) throws Exception {
@@ -48,12 +46,11 @@ public class PeerThread extends Thread {
         this.prepareOkCount = 0;
         this.acceptOkCount = 0;
         this.paxosLeader = "unassigned";
-        this.president = "undecided";
         this.proposerPhase = phase0;
         this.acceptorPhase = phase0;
         this.phase2AMaxProposalNum = 0; // Proposals always start at 1, so this is initialized to 0
         this.keepAlive = true;
-        this.faulty=false;
+        this.faulty = false;
     }
 
     // Thread run method keeping the peer alive
@@ -71,25 +68,26 @@ public class PeerThread extends Thread {
                         this.proposalValue = this.updatedProposalValue;
                     }
                     System.out.println(">> " + this.memberName + ": Prepare-Ok majority achieved!");
-                    System.out.println(">> " + this.memberName +": Starting Phase2. Sending accept-requests with value: " + this.proposalValue);
+                    System.out.println(">> " + this.memberName
+                            + ": Starting Phase2. Sending accept-requests with value: " + this.proposalValue);
                     this.proposerPhase = PeerThread.phase2;
                     String outputMessageType = "acceptRequest";
                     // Outgoing message schema: senderID:messageType-IdOfProposalSent-value
                     String outputmsg = this.memberName + ":" + outputMessageType + "-" + this.activeProposalId + "-"
                             + this.proposalValue;
-                    if (this.faulty){
+                    if (this.faulty) {
                         this.server.sendMessage(outputmsg, outputMessageType, this);
                         keepAlive = false;
-                    }else{
+                    } else {
                         this.server.sendMessage(outputmsg, outputMessageType, this);
                     }
                 }
 
                 if ((this.proposerPhase.equals(phase2)) && (this.acceptOkCount >= majority)) {
-                    if (this.proposalValue.equals(this.president)) {
+                    if (this.proposalValue.equals(this.peer.president)) {
                         System.out.println(">> " + this.memberName + ": Accept-Ok majority achieved!");
-                        System.out.println(
-                            ">> " + this.memberName +": Sending decide message. Paxos has agreed on value: " + this.proposalValue + "\n");
+                        System.out.println(">> " + this.memberName
+                                + ": Sending decide message. Paxos has agreed on value: " + this.proposalValue + "\n");
 
                         this.proposerPhase = PeerThread.phase3;
                         String outputMessageType = "decide";
@@ -113,7 +111,7 @@ public class PeerThread extends Thread {
                 String senderName = msg.split(":")[0];
                 String msgContent = msg.split(":")[1];
 
-                if (keepAlive){
+                if (keepAlive) {
                     processMessage(senderName, msgContent);
                 }
             }
@@ -140,7 +138,7 @@ public class PeerThread extends Thread {
         switch (inputMessageType) {
             case "proposal":
                 if (verbose) {
-                    System.out.print(">> " + this.memberName +": Proposal received:");
+                    System.out.print(">> " + this.memberName + ": Proposal received:");
                     System.out.print(message + "\n");
                 }
 
@@ -160,15 +158,16 @@ public class PeerThread extends Thread {
                     if (sender.equals(this.paxosLeader)) {
                         outputValue = "undecided";
                     } else {
-                        outputValue = this.president;
+                        outputValue = this.peer.president;
                     }
 
                     if ((!sender.equals(this.memberName)) && verbose) {
-                        System.out.println(">> " + this.memberName +": Incoming proposal num is higher than promise. Sending Prepare-Ok ...");
+                        System.out.println(">> " + this.memberName
+                                + ": Incoming proposal num is higher than promise. Sending Prepare-Ok ...");
                     }
 
                     // Check if proposer is unassigned or if it is the currently elected proposer
-                    if ((this.president.equals("undecided"))) {
+                    if ((this.peer.president.equals("undecided"))) {
                         this.promiseNum = proposalNum;
                         proposalNumberString = Float.toString(this.promiseNum);
 
@@ -184,23 +183,26 @@ public class PeerThread extends Thread {
                     outputmsg = this.memberName + ":" + outputMessageType + "-" + sender + "-" + proposalNumberString
                             + "-" + outputValue;
                     if (verbose) {
-                        System.out.println(
-                            ">> " + this.memberName +": Sending prepare-ok of value: " + outputValue);
+                        System.out.println(">> " + this.memberName + ": Sending prepare-ok of value: " + outputValue);
                     }
-                    
+
                     this.server.sendMessage(outputmsg, outputMessageType, this);
                 } else {
                     String outputMessageType = "NACK";
                     String outputmsg;
                     String proposalNumberString;
                     String outputValue;
-
+                    proposalNumberString = Float.toString(this.promiseNum);
+                    outputValue = this.peer.president;
+                    outputmsg = this.memberName + ":" + outputMessageType + "-" + sender + "-" + proposalNumberString
+                            + "-" + outputValue;
+                    this.server.sendMessage(outputmsg, outputMessageType, this);
                 }
                 break;
 
             case "prepareOk":
                 if (verbose) {
-                    System.out.println(">> " + this.memberName +": Prepare-Ok received: " + message);
+                    System.out.println(">> " + this.memberName + ": Prepare-Ok received: " + message);
                 }
 
                 // Incoming message schema:
@@ -227,6 +229,18 @@ public class PeerThread extends Thread {
                 }
                 break;
 
+            case "NACK":
+                // Incoming message schema:
+                // senderID:messageType-intendedRecipient-proposalNum-value
+                intendedRecipient = token;
+                float latestPromisedNum = Float.parseFloat(msgArr[2]);
+                incomingValue = msgArr[3];
+                if (!sender.equals(this.memberName)) {
+                    this.peer.setProposalNum(latestPromisedNum + 2);
+                }
+                this.peer.president = incomingValue;
+                break;
+
             case "acceptRequest":
                 this.acceptorPhase = PeerThread.phase3;
                 if (verbose) {
@@ -240,20 +254,21 @@ public class PeerThread extends Thread {
                 String outputmsg;
                 String outputMessageType;
                 if (proposalNum == promiseNum) {
-                    if (verbose){
+                    if (verbose) {
                         System.out.println(">> " + this.memberName + ": Setting president to: " + incomingValue);
                     }
-                    this.president = incomingValue;
+                    this.peer.president = incomingValue;
                     outputMessageType = "acceptOk";
                     if ((!sender.equals(this.memberName)) && verbose) {
-                        System.out.println(">> " + this.memberName + ": Incoming proposal num matches promise. Sending Accept-Ok ...");
+                        System.out.println(">> " + this.memberName
+                                + ": Incoming proposal num matches promise. Sending Accept-Ok ...");
                     }
 
                     String outputValue;
                     if (sender.equals(this.paxosLeader)) {
                         outputValue = "undecided";
                     } else {
-                        outputValue = this.president;
+                        outputValue = this.peer.president;
                     }
 
                     // Outgoing message schema: senderID:messageType-intendedRecipient-value
@@ -261,7 +276,7 @@ public class PeerThread extends Thread {
                     this.server.sendMessage(outputmsg, outputMessageType, this);
                     this.paxosLeader = sender;
                     if (verbose) {
-                        System.out.println(">> " + this.memberName +": Set Paxos leader to " + this.paxosLeader);
+                        System.out.println(">> " + this.memberName + ": Set Paxos leader to " + this.paxosLeader);
                     }
 
                 } else {
@@ -293,9 +308,9 @@ public class PeerThread extends Thread {
             case "decide":
                 // Outgoing message schema: senderID:messageType-IdOfProposalSent-value
                 incomingValue = msgArr[2];
-                if (incomingValue.equals(this.president)) {
+                if (incomingValue.equals(this.peer.president)) {
                     if (!sender.equals(this.memberName)) {
-                        System.out.println(">> " + this.memberName + ": Paxos has agreed on value: " + this.president);
+                        System.out.println(">> " + this.memberName + ": Paxos has agreed on value: " + this.peer.president);
                     }
                 } else {
                     System.out.println(">> " + this.memberName + ": Paxos protocol error E1!");
@@ -342,15 +357,11 @@ public class PeerThread extends Thread {
         return proposalValue;
     }
 
-    public String getPresident() {
-        return president;
-    }
-
     public void setUpdateRequired(boolean updateRequired) {
         this.updateRequired = updateRequired;
     }
 
-    public void setKeepAlive(boolean keepAlive){
+    public void setKeepAlive(boolean keepAlive) {
         this.keepAlive = keepAlive;
     }
 
@@ -358,5 +369,4 @@ public class PeerThread extends Thread {
         this.faulty = faulty;
     }
 
-    
 }
