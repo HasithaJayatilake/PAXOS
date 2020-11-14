@@ -151,6 +151,7 @@ public class IntegratedPaxosTester {
                             System.out.println("Test case a successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>>  Runtime: " + this.runtime + "ms");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>>  MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Throughput: " + this.messageCount/this.runtime + " messages/ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -190,6 +191,7 @@ public class IntegratedPaxosTester {
                             System.out.println("Test case b successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Throughput: " + this.messageCount/this.runtime + " messages/ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -231,6 +233,7 @@ public class IntegratedPaxosTester {
                             System.out.println("Test case c successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Throughput: " + this.messageCount/this.runtime + " messages/ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -270,6 +273,7 @@ public class IntegratedPaxosTester {
                             System.out.println("Test case d successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Throughput: " + this.messageCount/this.runtime + " messages/ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -308,6 +312,7 @@ public class IntegratedPaxosTester {
                             System.out.println("Test case e successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Throughput: " + this.messageCount/this.runtime + " messages/ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
@@ -386,6 +391,7 @@ public class IntegratedPaxosTester {
                             System.out.println("Test case f successful!");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> Runtime: " + this.runtime + "ms");
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> MessageCount: " + this.messageCount);
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> Throughput: " + this.messageCount/this.runtime + " messages/ms");
                             System.out.println("----------------------------------------------------------------\n");
                         } else {
                             System.out.println("\n----------------------------------------------------------------");
