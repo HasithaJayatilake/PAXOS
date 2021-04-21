@@ -1,10 +1,10 @@
 # PAXOS
 
 ## Overview
-
  - This is a simple PAXOS implementation, with 9 named peers (M1 to M9).
+ - Java version 14 or above is recommended for running this implementation.
  - M1, 2 and 3 are allowed to make proposals (they are proposers and acceptors at the same time)
- - The rest are only acceptors
+ - The rest are merely 'acceptors'
 
 ### Proposal Priority
 
